@@ -1,37 +1,15 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import "./Analytics.css";
 
-function ExpenseByCategoryChart({ transactions }) {
-  const expenseTransactions = transactions.filter(t => t.amount < 0);
-
-  // Calculate spending by category
-  const categoryTotals = expenseTransactions.reduce((acc, t) => {
-    acc[t.category] = (acc[t.category] || 0) + Math.abs(t.amount);
-    return acc;
-  }, {});
-
-  const colors = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981", "#3b82f6"];
-  const data = Object.entries(categoryTotals).map(([name, value], index) => ({
-    name,
-    value,
-    color: colors[index % colors.length],
-  }));
-
-  if (data.length === 0) {
-    return (
-      <div className="chart-container">
-        <div className="chart-header">
-          <h3 className="chart-title">Expense by Category</h3>
-          <span className="chart-badge">This month</span>
-        </div>
-        <div className="empty-state">
-          <div className="empty-state-icon">🥧</div>
-          <h3 className="empty-state-title">No expense data</h3>
-          <p className="empty-state-description">Add expense transactions to see category breakdown.</p>
-        </div>
-      </div>
-    );
-  }
+function ExpenseByCategoryChart() {
+  const data = [
+    { name: "Food & Dining", value: 850, color: "#6366f1" },
+    { name: "Transportation", value: 420, color: "#8b5cf6" },
+    { name: "Shopping", value: 680, color: "#ec4899" },
+    { name: "Entertainment", value: 320, color: "#f59e0b" },
+    { name: "Bills & Utilities", value: 540, color: "#10b981" },
+    { name: "Healthcare", value: 280, color: "#3b82f6" },
+  ];
 
   return (
     <div className="chart-container">

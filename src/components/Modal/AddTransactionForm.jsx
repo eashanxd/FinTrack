@@ -71,15 +71,14 @@ function AddTransactionForm({ onSave, onCancel }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       setIsSubmitting(true);
       
-      // Simulate a brief loading state for better UX
-      setTimeout(() => {
-        onSave({
+      try {
+        await onSave({
           ...formData,
           amount: parseFloat(formData.amount),
           id: Date.now(),
@@ -95,8 +94,12 @@ function AddTransactionForm({ onSave, onCancel }) {
           paymentMethod: "",
         });
         setErrors({});
+      } catch (error) {
+        console.error('Error submitting transaction:', error);
+        setError('Failed to submit transaction. Please try again.');
+      } finally {
         setIsSubmitting(false);
-      }, 500);
+      }
     }
   };
 

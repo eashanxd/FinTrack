@@ -1,31 +1,16 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import "./Analytics.css";
 
-function WeeklySpendingChart({ transactions }) {
-  const expenseTransactions = transactions.filter(t => t.amount < 0);
-
-  // Group by day of week (simplified for demo)
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const data = days.map(day => ({
-    day,
-    spending: expenseTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0) / 7, // Evenly distribute for demo
-  }));
-
-  if (expenseTransactions.length === 0) {
-    return (
-      <div className="chart-container">
-        <div className="chart-header">
-          <h3 className="chart-title">Weekly Spending</h3>
-          <span className="chart-badge">This week</span>
-        </div>
-        <div className="empty-state">
-          <div className="empty-state-icon">📊</div>
-          <h3 className="empty-state-title">No spending data</h3>
-          <p className="empty-state-description">Add expense transactions to see weekly spending patterns.</p>
-        </div>
-      </div>
-    );
-  }
+function WeeklySpendingChart() {
+  const data = [
+    { day: "Mon", spending: 120 },
+    { day: "Tue", spending: 85 },
+    { day: "Wed", spending: 200 },
+    { day: "Thu", spending: 150 },
+    { day: "Fri", spending: 280 },
+    { day: "Sat", spending: 320 },
+    { day: "Sun", spending: 180 },
+  ];
 
   return (
     <div className="chart-container">

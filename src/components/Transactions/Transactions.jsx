@@ -9,9 +9,14 @@ import AddTransactionForm from "../Modal/AddTransactionForm";
 function Transactions({ transactions, summary, onAddTransaction, onDeleteTransaction }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddTransaction = (newTransaction) => {
-    onAddTransaction(newTransaction);
-    setIsModalOpen(false);
+  const handleAddTransaction = async (newTransaction) => {
+    try {
+      await onAddTransaction(newTransaction);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error in handleAddTransaction:', error);
+      alert('Failed to add transaction. Please check the console for details.');
+    }
   };
 
   return (

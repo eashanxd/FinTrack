@@ -3,7 +3,7 @@ import "./Auth.css";
 import InputField from "./InputField";
 import PasswordInput from "./PasswordInput";
 import SocialLoginButtons from "./SocialLoginButtons";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginForm({ onToggleMode }) {
   const [email, setEmail] = useState("");
@@ -20,13 +20,14 @@ function LoginForm({ onToggleMode }) {
     setIsLoading(true);
     
     try {
-      await login(email, password); 
-    } catch (err) {
-      if (err.message) {
-        setError(err.message);
-      } else {
-        setError("Unable to sign in. Please try again.");
+      const result = await login(email, password);
+
+      if (!result.success) {
+        setError(result.error || "Unable to sign in. Please try again.");
       }
+      // If successful, AuthContext will handle the redirect automatically
+    } catch (err) {
+      setError(err.message || "Unable to sign in. Please try again.");
     } finally {
       setIsLoading(false);
     }

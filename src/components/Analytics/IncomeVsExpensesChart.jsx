@@ -1,42 +1,15 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import "./Analytics.css";
 
-function IncomeVsExpensesChart({ transactions }) {
-  // Group transactions by month (simplified for demo)
-  const monthlyData = transactions.reduce((acc, t) => {
-    const date = new Date();
-    const monthKey = date.toLocaleString('default', { month: 'short' });
-    
-    if (!acc[monthKey]) {
-      acc[monthKey] = { month: monthKey, income: 0, expenses: 0 };
-    }
-    
-    if (t.amount > 0) {
-      acc[monthKey].income += t.amount;
-    } else {
-      acc[monthKey].expenses += Math.abs(t.amount);
-    }
-    
-    return acc;
-  }, {});
-
-  const data = Object.values(monthlyData);
-
-  if (data.length === 0) {
-    return (
-      <div className="chart-container">
-        <div className="chart-header">
-          <h3 className="chart-title">Monthly Income vs Expenses</h3>
-          <span className="chart-badge">Last 6 months</span>
-        </div>
-        <div className="empty-state">
-          <div className="empty-state-icon">📈</div>
-          <h3 className="empty-state-title">No data available</h3>
-          <p className="empty-state-description">Add transactions to see income vs expenses trends.</p>
-        </div>
-      </div>
-    );
-  }
+function IncomeVsExpensesChart() {
+  const data = [
+    { month: "Jan", income: 4500, expenses: 3200 },
+    { month: "Feb", income: 4800, expenses: 3400 },
+    { month: "Mar", income: 5200, expenses: 3800 },
+    { month: "Apr", income: 4900, expenses: 3100 },
+    { month: "May", income: 5500, expenses: 4200 },
+    { month: "Jun", income: 5800, expenses: 3900 },
+  ];
 
   return (
     <div className="chart-container">

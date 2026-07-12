@@ -3,7 +3,7 @@ import "./Auth.css";
 import InputField from "./InputField";
 import PasswordInput from "./PasswordInput";
 import SocialLoginButtons from "./SocialLoginButtons";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function RegisterForm({ onToggleMode }) {
   const [fullName, setFullName] = useState("");
@@ -34,18 +34,22 @@ function RegisterForm({ onToggleMode }) {
     setIsLoading(true);
     
     try {
-  const user = await register(email, password, fullName);
+      const result = await register(email, password, fullName);
 
-  if (user) {
-    setSuccess(true);
-  } else {
-    setError("Registration failed. Please try again.");
-  }
-} catch (err) {
-  setError(err.message || "Registration failed.");
-} finally {
-  setIsLoading(false);
-}
+      if (result.success) {
+        setSuccess(true);
+        // Auto-redirect to dashboard after successful registration
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        setError(result.error || "Registration failed. Please try again.");
+      }
+    } catch (err) {
+      setError(err.message || "Registration failed.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
