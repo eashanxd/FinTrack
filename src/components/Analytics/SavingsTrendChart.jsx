@@ -1,38 +1,30 @@
+import { useMemo } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import "./Analytics.css";
+import { calculateSavingsTrend } from "../../utils/analytics";
 
-function SavingsTrendChart({ transactions, summary }) {
-  if (transactions.length === 0) {
+function SavingsTrendChart({ transactions }) {
+  const data = useMemo(() => {
+    return calculateSavingsTrend(transactions, 6);
+  }, [transactions]);
+
+  if (data.length === 0) {
     return (
       <div className="chart-container">
         <div className="chart-header">
           <h3 className="chart-title">Savings Trend</h3>
-          <span className="chart-badge">Last 6 months</span>
         </div>
-        <div className="empty-state">
-          <div className="empty-state-icon">💰</div>
-          <h3 className="empty-state-title">No savings data</h3>
-          <p className="empty-state-description">Add transactions to track your savings over time.</p>
+        <div className="chart-empty-state">
+          <p>No savings data available</p>
         </div>
       </div>
     );
   }
 
-  // Simplified savings trend based on current savings
-  const data = [
-    { month: "Jan", savings: summary.savings * 0.5 },
-    { month: "Feb", savings: summary.savings * 0.6 },
-    { month: "Mar", savings: summary.savings * 0.7 },
-    { month: "Apr", savings: summary.savings * 0.8 },
-    { month: "May", savings: summary.savings * 0.9 },
-    { month: "Jun", savings: summary.savings },
-  ];
-
   return (
     <div className="chart-container">
       <div className="chart-header">
         <h3 className="chart-title">Savings Trend</h3>
-        <span className="chart-badge">Last 6 months</span>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
@@ -46,6 +38,7 @@ function SavingsTrendChart({ transactions, summary }) {
           <XAxis dataKey="month" stroke="#a1a1aa" />
           <YAxis stroke="#a1a1aa" />
           <Tooltip
+            formatter={(value) => `$${value.toFixed(2)}`}
             contentStyle={{
               backgroundColor: "rgba(22, 23, 29, 0.95)",
               border: "1px solid rgba(255,255,255,0.1)",

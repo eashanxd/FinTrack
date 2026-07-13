@@ -1,21 +1,32 @@
+import { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 import "./Analytics.css";
+import { groupByCategory, categoryGroupsToChartData } from "../../utils/analytics";
 
-function ExpenseByCategoryChart() {
-  const data = [
-    { name: "Food & Dining", value: 850, color: "#6366f1" },
-    { name: "Transportation", value: 420, color: "#8b5cf6" },
-    { name: "Shopping", value: 680, color: "#ec4899" },
-    { name: "Entertainment", value: 320, color: "#f59e0b" },
-    { name: "Bills & Utilities", value: 540, color: "#10b981" },
-    { name: "Healthcare", value: 280, color: "#3b82f6" },
-  ];
+function ExpenseByCategoryChart({ transactions }) {
+  const data = useMemo(() => {
+    const categoryGroups = groupByCategory(transactions, 'expense');
+    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4', '#84cc16'];
+    return categoryGroupsToChartData(categoryGroups, colors);
+  }, [transactions]);
+
+  if (data.length === 0) {
+    return (
+      <div className="chart-container">
+        <div className="chart-header">
+          <h3 className="chart-title">Expense by Category</h3>
+        </div>
+        <div className="chart-empty-state">
+          <p>No expense data available</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="chart-container">
       <div className="chart-header">
         <h3 className="chart-title">Expense by Category</h3>
-        <span className="chart-badge">This month</span>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
@@ -33,6 +44,7 @@ function ExpenseByCategoryChart() {
             ))}
           </Pie>
           <Tooltip
+            formatter={(value) => `$${value.toFixed(2)}`}
             contentStyle={{
               backgroundColor: "rgba(22, 23, 29, 0.95)",
               border: "1px solid rgba(255,255,255,0.1)",

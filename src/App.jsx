@@ -112,7 +112,7 @@ function App() {
     if (!user) return;
 
     try {
-      const formattedAmount = newTransaction.type === "expense" 
+      const formattedAmount = newTransaction.type === "expense"
         ? -Math.abs(newTransaction.amount)
         : Math.abs(newTransaction.amount);
 
@@ -120,7 +120,7 @@ function App() {
         name: newTransaction.description,
         category: newTransaction.category,
         amount: formattedAmount,
-        date: new Date().toISOString(),
+        date: newTransaction.date || new Date().toISOString(),
       };
 
       // Create transaction in Appwrite
@@ -130,6 +130,7 @@ function App() {
       await fetchTransactions();
     } catch (error) {
       console.error('Error creating transaction:', error);
+      alert('Failed to add transaction. Please check the console for details.');
     }
   };
 

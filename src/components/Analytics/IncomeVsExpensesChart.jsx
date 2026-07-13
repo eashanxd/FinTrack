@@ -1,21 +1,31 @@
+import { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import "./Analytics.css";
+import { groupByMonth, monthGroupsToChartData } from "../../utils/analytics";
 
-function IncomeVsExpensesChart() {
-  const data = [
-    { month: "Jan", income: 4500, expenses: 3200 },
-    { month: "Feb", income: 4800, expenses: 3400 },
-    { month: "Mar", income: 5200, expenses: 3800 },
-    { month: "Apr", income: 4900, expenses: 3100 },
-    { month: "May", income: 5500, expenses: 4200 },
-    { month: "Jun", income: 5800, expenses: 3900 },
-  ];
+function IncomeVsExpensesChart({ transactions }) {
+  const data = useMemo(() => {
+    const monthGroups = groupByMonth(transactions);
+    return monthGroupsToChartData(monthGroups);
+  }, [transactions]);
+
+  if (data.length === 0) {
+    return (
+      <div className="chart-container">
+        <div className="chart-header">
+          <h3 className="chart-title">Monthly Income vs Expenses</h3>
+        </div>
+        <div className="chart-empty-state">
+          <p>No transaction data available</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="chart-container">
       <div className="chart-header">
         <h3 className="chart-title">Monthly Income vs Expenses</h3>
-        <span className="chart-badge">Last 6 months</span>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
@@ -23,6 +33,7 @@ function IncomeVsExpensesChart() {
           <XAxis dataKey="month" stroke="#a1a1aa" />
           <YAxis stroke="#a1a1aa" />
           <Tooltip
+            formatter={(value) => `$${value.toFixed(2)}`}
             contentStyle={{
               backgroundColor: "rgba(22, 23, 29, 0.95)",
               border: "1px solid rgba(255,255,255,0.1)",

@@ -32,11 +32,6 @@ function Dashboard({ transactions, summary, currentUser, onAddTransaction }) {
               </p>
             )}
           </div>
-          {transactions.length === 0 && (
-            <div className="welcome-actions">
-              <button className="btn-primary">Add Your First Transaction</button>
-            </div>
-          )}
         </div>
 
         {/* Summary Cards */}

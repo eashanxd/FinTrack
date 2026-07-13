@@ -1,40 +1,56 @@
+import { useMemo } from "react";
 import "./Analytics.css";
+import {
+  calculateTotalIncome,
+  calculateTotalExpenses,
+  calculateNetBalance,
+  calculateAverageTransaction,
+  calculateSavingsRate,
+} from "../../utils/analytics";
 
-function KPICards({ summary, transactions }) {
-  const kpiData = [
-    {
-      title: "Total Income",
-      value: `$${summary.income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      change: transactions.length > 0 ? "+8.2%" : null,
-      trend: transactions.length > 0 ? "up" : null,
-      icon: "📈",
-      color: "green",
-    },
-    {
-      title: "Total Expenses",
-      value: `$${summary.expenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      change: transactions.length > 0 ? "-2.1%" : null,
-      trend: transactions.length > 0 ? "down" : null,
-      icon: "📉",
-      color: "red",
-    },
-    {
-      title: "Net Savings",
-      value: `$${summary.savings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      change: transactions.length > 0 ? "+15.3%" : null,
-      trend: transactions.length > 0 ? "up" : null,
-      icon: "💰",
-      color: "blue",
-    },
-    {
-      title: "Transactions",
-      value: transactions.length.toString(),
-      change: null,
-      trend: null,
-      icon: "�",
-      color: "purple",
-    },
-  ];
+function KPICards({ transactions }) {
+  const kpiData = useMemo(() => {
+    const totalIncome = calculateTotalIncome(transactions);
+    const totalExpenses = calculateTotalExpenses(transactions);
+    const netBalance = calculateNetBalance(transactions);
+    const avgTransaction = calculateAverageTransaction(transactions);
+    const savingsRate = calculateSavingsRate(transactions);
+
+    return [
+      {
+        title: "Total Income",
+        value: `$${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        change: transactions.length > 0 ? null : null,
+        trend: null,
+        icon: "📈",
+        color: "green",
+      },
+      {
+        title: "Total Expenses",
+        value: `$${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        change: transactions.length > 0 ? null : null,
+        trend: null,
+        icon: "📉",
+        color: "red",
+      },
+      {
+        title: "Net Balance",
+        value: `$${netBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        change: transactions.length > 0 ? null : null,
+        trend: null,
+        icon: "💰",
+        color: "blue",
+      },
+      {
+        title: "Avg Transaction",
+        value: `$${avgTransaction.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        change: transactions.length > 0 ? null : null,
+        trend: null,
+        icon: "📊",
+        color: "purple",
+      },
+    ];
+  }, [transactions]);
 
   return (
     <div className="kpi-cards">

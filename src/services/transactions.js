@@ -25,6 +25,7 @@ const COLLECTION_ID = import.meta.env.VITE_APPWRITE_TRANSACTIONS_COLLECTION_ID |
  */
 export const createTransaction = async (transaction, userId) => {
   try {
+    const now = new Date().toISOString();
     const document = await databases.createDocument(
       DATABASE_ID,
       COLLECTION_ID,
@@ -33,10 +34,11 @@ export const createTransaction = async (transaction, userId) => {
         name: transaction.name,
         category: transaction.category,
         amount: transaction.amount,
-        date: transaction.date || new Date().toISOString(),
+        date: transaction.date || now,
         userId: userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
+        update: now,
       }
     );
     return document;
@@ -76,6 +78,7 @@ export const getTransactions = async (userId) => {
  */
 export const updateTransaction = async (id, transaction) => {
   try {
+    const now = new Date().toISOString();
     const document = await databases.updateDocument(
       DATABASE_ID,
       COLLECTION_ID,
@@ -85,7 +88,8 @@ export const updateTransaction = async (id, transaction) => {
         category: transaction.category,
         amount: transaction.amount,
         date: transaction.date,
-        updatedAt: new Date().toISOString(),
+        updatedAt: now,
+        update: now,
       }
     );
     return document;

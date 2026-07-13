@@ -234,25 +234,26 @@ function AddTransactionForm({ onSave, onCancel }) {
           </select>
           {errors.paymentMethod && <span className="form-error">{errors.paymentMethod}</span>}
         </div>
-      </div>
 
-      <div className="form-footer">
-        <button type="button" className="btn-secondary" onClick={onCancel} disabled={isSubmitting}>
-          Cancel
-        </button>
-        <button type="submit" className="btn-primary" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              <svg className="loading-spinner" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.3"/>
-                <path d="M8 1C8 1 8 4 8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-              Submitting...
-            </>
-          ) : (
-            "Submit Transaction"
-          )}
-        </button>
+        {/* Form Actions */}
+        <div className="form-footer">
+          <button type="button" className="btn-secondary" onClick={onCancel} disabled={isSubmitting}>
+            Cancel
+          </button>
+          <button type="submit" className="btn-primary" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <svg className="loading-spinner" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.3"/>
+                  <path d="M8 1C8 1 8 4 8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Submit Transaction"
+            )}
+          </button>
+        </div>
       </div>
     </form>
   );
