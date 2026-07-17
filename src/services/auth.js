@@ -33,11 +33,20 @@ return await account.get();
  */
 export const login = async (email, password) => {
   try {
+    // Remove existing session if one exists
+    try {
+      await account.deleteSession("current");
+    } catch (err) {
+      // Ignore if there is no active session
+    }
+
+    // Create a new session
     await account.createEmailPasswordSession(email, password);
 
+    // Return the logged-in user
     return await account.get();
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     throw error;
   }
 };
